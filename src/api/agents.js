@@ -234,6 +234,22 @@ export async function sendAgentPing(agent_id, params = {}) {
   return data;
 }
 
+/**
+ * Fetch Vaultwarden credentials for the client this agent belongs to.
+ * Returns an array of { id, name, username, password, notes } objects.
+ * The backend proxies the Vaultwarden API so the master token is never
+ * exposed to the browser.
+ */
+export async function fetchAgentVaultCreds(agent_id) {
+  try {
+    const { data } = await axios.get(`${baseUrl}/${agent_id}/vaultcreds/`);
+    return data;
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+}
+
 // agent notes
 export async function fetchAgentNotes(agent_id, params = {}) {
   try {
